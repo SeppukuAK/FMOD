@@ -14,16 +14,6 @@ AdriSound::AdriSound(const char* path)
 		&sound);
 	SoundManager::ERRCHECK(result);
 
-	//Reproducción del sonido
-	result = SoundManager::GetInstance()->GetSystem()->playSound(
-		sound,
-		0, // grupo de canales, 0 sin agrupar (agrupado en el master)
-		true, // arranca con "pause" 
-		&channel);
-	SoundManager::ERRCHECK(result);
-
-	SoundManager::ERRCHECK(channel->setLoopCount(0));
-
 	////Posiciona en el tiempo 
 	//channel->setPosition(0, FMOD_TIMEUNIT_MS); //Medio segundo después
 
@@ -51,12 +41,24 @@ AdriSound::~AdriSound()
 
 void AdriSound::Play()
 {
-	SoundManager::ERRCHECK(channel->setPaused(false));
+	//Reproducción del sonido
+	FMOD_RESULT result = SoundManager::GetInstance()->GetSystem()->playSound(
+		sound,
+		0, // grupo de canales, 0 sin agrupar (agrupado en el master)
+		false, // arranca con "pause" 
+		&channel);
+	SoundManager::ERRCHECK(result);
+
+	SoundManager::ERRCHECK(channel->setLoopCount(0));
 }
 
 void AdriSound::Stop()
 {
-	SoundManager::ERRCHECK(channel->stop());
+	if (channel != nullptr)
+	{
+		SoundManager::ERRCHECK(channel->stop());
+		channel = nullptr;
+	}
 }
 
 void AdriSound::Pause()
@@ -77,6 +79,9 @@ void AdriSound::SetPan(float pan)
 //Método para pausa o despausar el audio
 void AdriSound::TogglePaused() {
 	bool paused;
-	SoundManager::ERRCHECK(channel->getPaused(&paused));
-	SoundManager::ERRCHECK(channel->setPaused(!paused));
+	if (channel != nullptr)
+	{
+		SoundManager::ERRCHECK(channel->getPaused(&paused));
+		SoundManager::ERRCHECK(channel->setPaused(!paused));
+	}
 }

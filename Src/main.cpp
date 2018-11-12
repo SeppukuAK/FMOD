@@ -19,7 +19,6 @@ int main() {
 
 	std::string path = "../../Media/muestras/piano.ogg";
 	amiguiSound = new AdriSound(path.c_str());
-
 	//Bucle principal
 
 	printf("[P] Pausar/Despausar\n[V/v] Subir/bajar volumen\n[Q] Salir\n");
@@ -29,6 +28,13 @@ int main() {
 		if (_kbhit())
 		{
 			int key = _getche();
+
+			if ((key == 'W') || (key == 'w'))
+				amiguiSound->Play();
+
+			if ((key == 'S') || (key == 's'))
+				amiguiSound->Stop();
+
 			if ((key == 'P') || (key == 'p'))
 				amiguiSound->TogglePaused();
 
