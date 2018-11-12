@@ -18,6 +18,10 @@ public:
 	void Pause();
 	void SetVolume(float volume);
 	void SetPan(float pan);
+	void SetPitch(float pitch);
+
+	void FadeIn(float time);
+	void FadeOut(float time);
 
 private:
 

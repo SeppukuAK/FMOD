@@ -1,6 +1,29 @@
 #include "Sound.h"
 #include "SoundManager.h"
 
+void AdriSound::FadeIn(float time)
+{
+	unsigned long long dspclock;
+	SoundManager::ERRCHECK(channel->getDSPClock(0, &dspclock));
+
+	int rate;
+	SoundManager::ERRCHECK(SoundManager::GetInstance()->GetSystem()->getSoftwareFormat(&rate, 0, 0));                // Get mixer rate
+
+	channel->addFadePoint(dspclock, 0.0f);                 // Add a fade point at 'now' with full volume.
+	channel->addFadePoint(dspclock + (rate * time), 1.0f);    // Add a fade point 5 seconds later at 0 volume.
+}
+
+void AdriSound::FadeOut(float time)
+{
+	unsigned long long dspclock;
+	SoundManager::ERRCHECK(channel->getDSPClock(0, &dspclock));
+
+	int rate;
+	SoundManager::ERRCHECK(SoundManager::GetInstance()->GetSystem()->getSoftwareFormat(&rate, 0, 0));                // Get mixer rate
+
+	channel->addFadePoint(dspclock, 1.0f);                 // Add a fade point at 'now' with full volume.
+	channel->addFadePoint(dspclock + (rate * time), 0.0f);    // Add a fade point 5 seconds later at 0 volume.
+}
 
 AdriSound::AdriSound(const char* path)
 {
@@ -74,6 +97,11 @@ void AdriSound::SetVolume(float volume)
 void AdriSound::SetPan(float pan)
 {
 	SoundManager::ERRCHECK(channel->setPan(pan));
+}
+
+void AdriSound::SetPitch(float pitch)
+{
+	SoundManager::ERRCHECK(channel->setPitch(pitch));
 }
 
 //Método para pausa o despausar el audio
