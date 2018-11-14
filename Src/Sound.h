@@ -5,11 +5,11 @@
 /*
 Gestiona y reproduce sonidos.
 */
-class AdriSound
+class MySound
 {
 public:
-	AdriSound(const char* path);
-	~AdriSound();
+	MySound(const char* path);
+	~MySound();
 
 	void TogglePaused();
 
@@ -19,6 +19,11 @@ public:
 	void SetVolume(float volume);
 	void SetPan(float pan);
 	void SetPitch(float pitch);
+	void SetLoop(bool loop);
+
+	void SetPos(FMOD_VECTOR *pos);
+	void SetConeOrientarion(FMOD_VECTOR *dir);
+	void SetConeSettings(float insideConeAngle, float outsideconeangle, float outsidevolume);
 
 	void FadeIn(float time);
 	void FadeOut(float time);

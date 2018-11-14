@@ -41,7 +41,13 @@ SoundManager::~SoundManager()
 void SoundManager::Update()
 {
 	ERRCHECK(system->update());
+}
 
+void SoundManager::SetListenerPos(FMOD_VECTOR *pos)
+{
+	FMOD_VECTOR *vel = nullptr, *forward = nullptr, *up = nullptr;
+	ERRCHECK (system->get3DListenerAttributes(0, nullptr, vel, forward, up));
+	ERRCHECK( system->set3DListenerAttributes(0, pos, vel, forward, up));
 }
 
 //Facilita la gestión de errores

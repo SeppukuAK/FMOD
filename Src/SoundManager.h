@@ -23,6 +23,7 @@ private:
 
 public:
 	inline FMOD::System* GetSystem() { return system; };
+	void SetListenerPos(FMOD_VECTOR *pos);
 	void Update();
 
 	static void ERRCHECK(FMOD_RESULT result);	//Facilita la gestión de errores

@@ -14,19 +14,17 @@ dll y lib necesita
 */
 
 
-
-int main() {
-	SoundManager * soundManager = SoundManager::GetInstance();	//Inicializa el motor
-
-	AdriSound * amiguiSound = nullptr;
+void Ejercicio1()
+{
+	MySound * footstepSound = nullptr;
 
 	std::string path = "../../Media/muestras/piano.ogg";
-	amiguiSound = new AdriSound(path.c_str());
+	footstepSound = new MySound(path.c_str());
 	//Bucle principal
 
 	printf("[P] Pausar/Despausar\n[V/v] Subir/bajar volumen\n[Q] Salir\n");
 
-	bool paused; 
+	bool paused;
 	float volume = 1.0;
 	float currentOctave = 1.0f;
 	while (true)
@@ -36,62 +34,62 @@ int main() {
 			int key = _getche();
 
 			if ((key == 'W') || (key == 'w'))
-				amiguiSound->Play();
+				footstepSound->Play();
 
 			else if ((key == 'S') || (key == 's'))
-				amiguiSound->Stop();
+				footstepSound->Stop();
 
 			else if ((key == 'P') || (key == 'p'))
-				amiguiSound->TogglePaused();
+				footstepSound->TogglePaused();
 
 			else if ((key == 'Q') || (key == 'q')) break;
 
 			else if ((key == 'Z') || (key == 'z'))
 			{
-				amiguiSound->Play();
-				amiguiSound->SetPitch(currentOctave);
+				footstepSound->Play();
+				footstepSound->SetPitch(currentOctave);
 			}
 
 			//Re
 			else if ((key == 'X') || (key == 'x'))
 			{
-				amiguiSound->Play();
-				amiguiSound->SetPitch(currentOctave * pow(2,(2.0f/12.0f)));
+				footstepSound->Play();
+				footstepSound->SetPitch(currentOctave * pow(2, (2.0f / 12.0f)));
 			}
 
 			//Mi
 			else if ((key == 'C') || (key == 'c'))
 			{
-				amiguiSound->Play();
-				amiguiSound->SetPitch(currentOctave * pow(2, (4.0f / 12.0f)));
+				footstepSound->Play();
+				footstepSound->SetPitch(currentOctave * pow(2, (4.0f / 12.0f)));
 			}
 
 			//Fa
 			else if ((key == 'V') || (key == 'v'))
 			{
-				amiguiSound->Play();
-				amiguiSound->SetPitch(currentOctave * pow(2, (5.0f / 12.0f)));
+				footstepSound->Play();
+				footstepSound->SetPitch(currentOctave * pow(2, (5.0f / 12.0f)));
 			}
 
 			//Sol
 			else if ((key == 'B') || (key == 'b'))
 			{
-				amiguiSound->Play();
-				amiguiSound->SetPitch(currentOctave * pow(2, (7.0f / 12.0f)));
+				footstepSound->Play();
+				footstepSound->SetPitch(currentOctave * pow(2, (7.0f / 12.0f)));
 			}
 
 			//La
 			else if ((key == 'N') || (key == 'n'))
 			{
-				amiguiSound->Play();
-				amiguiSound->SetPitch(currentOctave * pow(2, (9.0f / 12.0f)));
+				footstepSound->Play();
+				footstepSound->SetPitch(currentOctave * pow(2, (9.0f / 12.0f)));
 			}
 
 			//Si
 			else if ((key == 'M') || (key == 'm'))
 			{
-				amiguiSound->Play();
-				amiguiSound->SetPitch(currentOctave * pow(2, (11.0f / 12.0f)));
+				footstepSound->Play();
+				footstepSound->SetPitch(currentOctave * pow(2, (11.0f / 12.0f)));
 			}
 			//+
 			else if (key == ',')
@@ -107,11 +105,123 @@ int main() {
 
 		}
 
-		soundManager->Update();
+		SoundManager::GetInstance()->Update();
 	}
 
-	delete amiguiSound;
+	delete footstepSound;
+
+}
+
+void Ejercicio2()
+{
+	SoundManager * soundManager = SoundManager::GetInstance();
+
+	soundManager->GetSystem()->set3DNumListeners(1);
+
+	FMOD_VECTOR listenerPos;
+	listenerPos.x = 15;
+	listenerPos.y = 0;
+	listenerPos.z = 15;
+	soundManager->SetListenerPos(&listenerPos);
+
+	MySound * footstepSound = nullptr;
+	std::string path = "../../Media/muestras/footstep.wav";
+	footstepSound = new MySound(path.c_str());
+	footstepSound->Play();
+
+	footstepSound->SetLoop(true);
+	FMOD_VECTOR sourcePos;
+	sourcePos.x = 15;
+	sourcePos.y = 0;
+	sourcePos.z = 5;
+	footstepSound->SetPos(&sourcePos);
+
+	FMOD_VECTOR sourceOrientation;
+	sourceOrientation.x = 1;
+	sourceOrientation.y = 2;
+	sourceOrientation.z = 3;
+	footstepSound->SetConeOrientarion(&sourceOrientation);
+
+
 	
+	while (true)
+	{
+		if (_kbhit())
+		{
+			int key = _getche();
+			if ((key == 'Q') || (key == 'q')) break;
+
+			if ((key == 'W') || (key == 'w'))
+			{
+				listenerPos.z += 1;
+				soundManager->SetListenerPos(&listenerPos);
+			}
+
+			if ((key == 'S') || (key == 's'))
+			{
+				listenerPos.z -= 1;
+				soundManager->SetListenerPos(&listenerPos);
+			}
+
+			if ((key == 'A') || (key == 'a'))
+			{
+				listenerPos.x -= 1;
+				soundManager->SetListenerPos(&listenerPos);
+			}
+
+			if ((key == 'D') || (key == 'd'))
+			{
+				listenerPos.x += 1;
+				soundManager->SetListenerPos(&listenerPos);
+			}
+
+			if ((key == 'J') || (key == 'j'))
+			{
+				
+				sourcePos.x -= 1;
+				footstepSound->SetPos(&sourcePos);
+
+			}
+
+			if ((key == 'K') || (key == 'k'))
+			{
+				sourcePos.z -= 1;
+				footstepSound->SetPos(&sourcePos);
+			}
+
+			if ((key == 'L') || (key == 'l'))
+			{
+				sourcePos.x += 1;
+				footstepSound->SetPos(&sourcePos);
+			}
+			if ((key == 'I') || (key == 'i'))
+			{
+				sourcePos.z += 1;
+				footstepSound->SetPos(&sourcePos);
+			}
+			if ((key == 'Y') || (key == 'y'))
+			{
+				footstepSound->SetConeOrientarion();
+			}
+		}
+
+		SoundManager::GetInstance()->Update();
+	}
+
+	/*
+	Buscar goto(x,y)
+	*/
+	delete footstepSound;
+}
+
+
+int main() {
+	SoundManager * soundManager = SoundManager::GetInstance();	//Inicializa el motor
+
+	//Ejercicio1();
+
+	Ejercicio2();
+
 	SoundManager::ResetInstance();
 
 	return 0;
