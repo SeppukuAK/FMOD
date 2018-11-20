@@ -50,6 +50,23 @@ void SoundManager::SetListenerPos(FMOD_VECTOR *pos)
 	ERRCHECK( system->set3DListenerAttributes(0, pos, vel, forward, up));
 }
 
+void SoundManager::SetDoppler(float newValue)
+{
+	float distanceFactor, rolloffScale;
+
+	ERRCHECK(system->get3DSettings(nullptr, &distanceFactor, &rolloffScale));
+	ERRCHECK(system->set3DSettings(newValue, distanceFactor, rolloffScale));
+}
+
+void SoundManager::SetRolloff(float newValue)
+{
+	float doppler, rolloffScale;
+
+	ERRCHECK(system->get3DSettings(&doppler, nullptr, &rolloffScale));
+	ERRCHECK(system->set3DSettings(doppler, newValue, rolloffScale));
+}
+
+
 //Facilita la gestión de errores
 void SoundManager::ERRCHECK(FMOD_RESULT result) {
 	if (result != FMOD_OK) {

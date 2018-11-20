@@ -199,10 +199,10 @@ void Ejercicio2()
 				sourcePos.z += 1;
 				footstepSound->SetPos(&sourcePos);
 			}
-			if ((key == 'Y') || (key == 'y'))
-			{
-				footstepSound->SetConeOrientarion();
-			}
+			//if ((key == 'Y') || (key == 'y'))
+			//{
+			//	footstepSound->SetConeOrientarion();
+			//}
 		}
 
 		SoundManager::GetInstance()->Update();
@@ -214,6 +214,36 @@ void Ejercicio2()
 	delete footstepSound;
 }
 
+//Se pueden crear grupos de canales y crear jerarquias
+void ChannelGroup()
+{
+//	// creamos un grupo de canales ``channelGroup''
+//	FMOD::ChannelGroup* channelGroup;
+//	system->createChannelGroup("grupo1", &channelGroup);
+//
+//	// aniadimos un canal existente, channel, al grupo
+//	channel->setChannelGroup(channelGroup);
+//	// se puede anidir un canal a un grupo directamente con
+//	// playSound(...,group,...,...) mas eficiente!
+//
+//	// aniadimos este grupo como hijo de otro grupo ``anotherGroup''
+//	channelGroup->addGroup(anotherGroup);
+//
+//	// hay un ``master'' (raiz del arbol de grupos) que se puede acceder asi:
+//	ChannelGroup* masterGroup;
+//	system->getMasterChannelGroup(&masterGroup);
+//
+//
+//	// Parar todos los canales del grupo
+//	channelGroup->stop();
+//	// Silenciar, pausar
+//	channelGroup->setMute(true);
+//	channelGroup->setPaused(true);
+//	// ajustar volumen
+//	channelGroup->setVolume(0.5f);
+//	// duplicar pitch
+//	channelGroup->setPitch(2.0f);
+}
 
 int main() {
 	SoundManager * soundManager = SoundManager::GetInstance();	//Inicializa el motor

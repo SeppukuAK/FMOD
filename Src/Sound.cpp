@@ -64,6 +64,7 @@ void MySound::SetVolume(float volume)
 	SoundManager::ERRCHECK(channel->setVolume(volume));
 }
 
+//Se utiliza para sonidos 2D: -1 Izq, O por defecto, 1 derecha
 void MySound::SetPan(float pan)
 {
 	SoundManager::ERRCHECK(channel->setPan(pan));
@@ -126,9 +127,12 @@ void MySound::SetPos(FMOD_VECTOR* pos)
 }
 
 void MySound::SetConeOrientarion(FMOD_VECTOR *dir) {
-	channel->set3DConeOrientation(dir);
+	channel->set3DConeOrientation(dir);
+
 }
 
 void MySound::SetConeSettings(float insideConeAngle,float outsideconeangle, float outsidevolume) {
-	channel->set3DConeSettings(insideConeAngle, outsideconeangle, outsidevolume); // angulos en grados	
+	channel->set3DConeSettings(insideConeAngle, outsideconeangle, outsidevolume); // angulos en grados
+	
+
 }
