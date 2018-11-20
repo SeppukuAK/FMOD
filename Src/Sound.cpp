@@ -15,6 +15,9 @@ MySound::MySound(const char* path)
 		&sound);
 	SoundManager::ERRCHECK(result);
 
+	//TODO: ARRANCAR CANAL EN PAUSE
+
+
 	////Posiciona en el tiempo 
 	//channel->setPosition(0, FMOD_TIMEUNIT_MS); //Medio segundo después
 
@@ -121,9 +124,16 @@ void MySound::FadeOut(float time)
 
 void MySound::SetPos(FMOD_VECTOR* pos)
 {
-	FMOD_VECTOR *vel = nullptr, *alt_pan_pos = nullptr;
-	channel->get3DAttributes(nullptr, vel, alt_pan_pos);
-	channel->set3DAttributes(pos, vel, alt_pan_pos);
+	FMOD_VECTOR *vel = nullptr;
+	channel->get3DAttributes(nullptr, vel);
+	channel->set3DAttributes(pos, vel);
+}
+
+void MySound::SetVel(FMOD_VECTOR* vel)
+{
+	FMOD_VECTOR *pos = nullptr;
+	channel->get3DAttributes(pos, nullptr);
+	channel->set3DAttributes(pos, vel);
 }
 
 void MySound::SetConeOrientarion(FMOD_VECTOR *dir) {
@@ -133,6 +143,10 @@ void MySound::SetConeOrientarion(FMOD_VECTOR *dir) {
 
 void MySound::SetConeSettings(float insideConeAngle,float outsideconeangle, float outsidevolume) {
 	channel->set3DConeSettings(insideConeAngle, outsideconeangle, outsidevolume); // angulos en grados
-	
 
 }
+
+void MySound::SetMinMaxDistance(float minDistance, float maxDistance) {
+	channel->set3DMinMaxDistance(minDistance, maxDistance);
+}
+

@@ -136,14 +136,14 @@ void Ejercicio2()
 	sourcePos.z = 5;
 	footstepSound->SetPos(&sourcePos);
 
-	FMOD_VECTOR sourceOrientation;
-	sourceOrientation.x = 1;
-	sourceOrientation.y = 2;
-	sourceOrientation.z = 3;
-	footstepSound->SetConeOrientarion(&sourceOrientation);
+	FMOD_VECTOR dir = { 1.0f, 2.0f, 3.0f };
+	footstepSound->SetConeOrientarion(&dir);
 
+	footstepSound->SetConeSettings(30.0f, 60.0f, 0.5f); // angulos en grados
 
-	
+	//Para calcular la velocidad de una fuente de sonido utilizamos la posicion de la entidad
+	//vel.x = (pos.x - lastPos.x) * elapsed;
+
 	while (true)
 	{
 		if (_kbhit())
@@ -177,7 +177,7 @@ void Ejercicio2()
 
 			if ((key == 'J') || (key == 'j'))
 			{
-				
+
 				sourcePos.x -= 1;
 				footstepSound->SetPos(&sourcePos);
 
@@ -217,36 +217,45 @@ void Ejercicio2()
 //Se pueden crear grupos de canales y crear jerarquias
 void ChannelGroup()
 {
-//	// creamos un grupo de canales ``channelGroup''
-//	FMOD::ChannelGroup* channelGroup;
-//	system->createChannelGroup("grupo1", &channelGroup);
-//
-//	// aniadimos un canal existente, channel, al grupo
-//	channel->setChannelGroup(channelGroup);
-//	// se puede anidir un canal a un grupo directamente con
-//	// playSound(...,group,...,...) mas eficiente!
-//
-//	// aniadimos este grupo como hijo de otro grupo ``anotherGroup''
-//	channelGroup->addGroup(anotherGroup);
-//
-//	// hay un ``master'' (raiz del arbol de grupos) que se puede acceder asi:
-//	ChannelGroup* masterGroup;
-//	system->getMasterChannelGroup(&masterGroup);
-//
-//
-//	// Parar todos los canales del grupo
-//	channelGroup->stop();
-//	// Silenciar, pausar
-//	channelGroup->setMute(true);
-//	channelGroup->setPaused(true);
-//	// ajustar volumen
-//	channelGroup->setVolume(0.5f);
-//	// duplicar pitch
-//	channelGroup->setPitch(2.0f);
+	//	// creamos un grupo de canales ``channelGroup''
+	//	FMOD::ChannelGroup* channelGroup;
+	//	system->createChannelGroup("grupo1", &channelGroup);
+	//
+	//	// aniadimos un canal existente, channel, al grupo
+	//	channel->setChannelGroup(channelGroup);
+	//	// se puede anidir un canal a un grupo directamente con
+	//	// playSound(...,group,...,...) mas eficiente!
+	//
+	//	// aniadimos este grupo como hijo de otro grupo ``anotherGroup''
+	//	channelGroup->addGroup(anotherGroup);
+	//
+	//	// hay un ``master'' (raiz del arbol de grupos) que se puede acceder asi:
+	//	ChannelGroup* masterGroup;
+	//	system->getMasterChannelGroup(&masterGroup);
+	//
+	//
+	//	// Parar todos los canales del grupo
+	//	channelGroup->stop();
+	//	// Silenciar, pausar
+	//	channelGroup->setMute(true);
+	//	channelGroup->setPaused(true);
+	//	// ajustar volumen
+	//	channelGroup->setVolume(0.5f);
+	//	// duplicar pitch
+	//	channelGroup->setPitch(2.0f);
 }
 
 int main() {
 	SoundManager * soundManager = SoundManager::GetInstance();	//Inicializa el motor
+
+	FMOD_VECTOR
+		listenerPos = { 0,0,0 }, // posicion del listener
+		listenerVel = { 0,0,0 }, // velocidad del listener
+		up = { 0,1,0 }, // vector up: hacia la ``coronilla''
+		at = { 1,0,0 }; // vector at: hacia donde mira
+
+		// colocamos listener
+	soundManager->SetListener(0, &listenerPos, &listenerVel, &up, &at);
 
 	//Ejercicio1();
 
