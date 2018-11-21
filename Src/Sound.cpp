@@ -147,6 +147,36 @@ void MySound::SetConeSettings(float insideConeAngle,float outsideconeangle, floa
 
 }
 
+void MySound::SetInsideCone(float insideConeAngle){
+	float *outsideconeangle, *outsidevolume;
+
+	channel->get3DConeSettings(nullptr, outsideconeangle, outsidevolume); // angulos en grados
+
+	channel->set3DConeSettings(insideConeAngle, *outsideconeangle,*outsidevolume); // angulos en grados
+}
+
+void MySound::SetOutsideCone(float outsideConeAngle) {
+	float *insideconeangle, *outsidevolume;
+
+	channel->get3DConeSettings(insideconeangle, nullptr, outsidevolume); // angulos en grados
+
+	channel->set3DConeSettings(*insideconeangle, outsideConeAngle, *outsidevolume); // angulos en grados
+}
+
+void MySound::SetMinDistance(float minDistance) {
+	float *maxDistance;
+
+	channel->get3DMinMaxDistance(nullptr, maxDistance);
+	channel->set3DMinMaxDistance(minDistance,* maxDistance);
+}
+
+void MySound::SetMaxDistance(float maxDistance) {
+	float *minDistance;
+
+	channel->get3DMinMaxDistance(minDistance, nullptr);
+	channel->set3DMinMaxDistance(*minDistance, maxDistance);
+}
+
 void MySound::SetMinMaxDistance(float minDistance, float maxDistance) {
 	channel->set3DMinMaxDistance(minDistance, maxDistance);
 }

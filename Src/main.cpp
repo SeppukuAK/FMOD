@@ -3,6 +3,8 @@
 #include "SoundManager.h"
 #include <string>
 #include <math.h>       /* pow */
+#include <stdio.h>  
+#include <windows.h>  
 
 /*
 C\software\FMOD\API\LOWLEVEL
@@ -12,6 +14,8 @@ dll y lib necesita
 64 dll y 64.lib
 
 */
+
+enum TileType { VACIO, SOURCE, LISTENER, REVERB, WALL };
 
 
 void Ejercicio1()
@@ -32,7 +36,7 @@ void Ejercicio1()
 		if (_kbhit())
 		{
 			int key = _getche();
-
+			
 			if ((key == 'W') || (key == 'w'))
 				footstepSound->Play();
 
@@ -113,17 +117,74 @@ void Ejercicio1()
 
 }
 
+void gotoxy(int x, int y) {
+	HANDLE hcon;
+	hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+	COORD dwPos;
+	dwPos.X = x;
+	dwPos.Y = y;
+	SetConsoleCursorPosition(hcon, dwPos);
+}
+
+void renderTileMap(TileType tileMap[30][30])
+{
+	gotoxy(0,0);
+
+	//Dibujar
+	for (int i = 0; i < 30; i++) {
+		for (int j = 0; j < 30; j++) {
+			switch (tileMap[i][j])
+			{
+			case VACIO:
+				printf(". ");
+
+				break;
+
+			case SOURCE:
+				printf("S ");
+
+				break;
+
+			case LISTENER:
+				printf("L ");
+
+				break;
+
+			case REVERB:
+
+				break;
+
+			case WALL:
+				break;
+			}
+		}
+		printf("\n");
+	}
+}
+
+
 void Ejercicio2()
 {
+	TileType tileMap[30][30];
+	int reverbCount;
+
 	SoundManager * soundManager = SoundManager::GetInstance();
 
 	soundManager->GetSystem()->set3DNumListeners(1);
+
+	//Inicialización del TileMap
+	for (int i = 0; i < 30; i++) {
+		for (int j = 0; j < 30; j++) {
+			tileMap[i][j] = VACIO;
+		}
+	}
 
 	FMOD_VECTOR listenerPos;
 	listenerPos.x = 15;
 	listenerPos.y = 0;
 	listenerPos.z = 15;
 	soundManager->SetListenerPos(&listenerPos);
+	tileMap[14][14] = LISTENER;
 
 	MySound * footstepSound = nullptr;
 	std::string path = "../../Media/muestras/footstep.wav";
@@ -132,10 +193,12 @@ void Ejercicio2()
 
 	footstepSound->SetLoop(true);
 	FMOD_VECTOR sourcePos;
-	sourcePos.x = 15;
+	sourcePos.x = 5;
 	sourcePos.y = 0;
-	sourcePos.z = 5;
+	sourcePos.z = 15;
 	footstepSound->SetPos(&sourcePos);
+	tileMap[(int)sourcePos.z-1][(int) sourcePos.x-1] = SOURCE;
+
 
 	FMOD_VECTOR dir = { 1.0f, 2.0f, 3.0f };
 	footstepSound->SetConeOrientarion(&dir);
@@ -144,7 +207,7 @@ void Ejercicio2()
 
 	//Para calcular la velocidad de una fuente de sonido utilizamos la posicion de la entidad
 	//vel.x = (pos.x - lastPos.x) * elapsed;
-
+	renderTileMap(tileMap);
 
 	while (true)
 	{
@@ -155,58 +218,107 @@ void Ejercicio2()
 
 			if ((key == 'W') || (key == 'w'))
 			{
+				tileMap[(int)listenerPos.z -1][(int)listenerPos.x - 1] = VACIO;
+
 				listenerPos.z += 1;
 				soundManager->SetListenerPos(&listenerPos);
+				tileMap[(int)listenerPos.z - 1][(int)listenerPos.x - 1] = LISTENER;
 			}
 
 			if ((key == 'S') || (key == 's'))
 			{
+				tileMap[(int)listenerPos.z - 1][(int)listenerPos.x - 1] = VACIO;
+
 				listenerPos.z -= 1;
 				soundManager->SetListenerPos(&listenerPos);
+				tileMap[(int)listenerPos.z - 1][(int)listenerPos.x - 1] = LISTENER;
+
 			}
 
 			if ((key == 'A') || (key == 'a'))
 			{
+				tileMap[(int)listenerPos.z - 1][(int)listenerPos.x - 1] = VACIO;
+
 				listenerPos.x -= 1;
 				soundManager->SetListenerPos(&listenerPos);
+				tileMap[(int)listenerPos.z - 1][(int)listenerPos.x - 1] = LISTENER;
+
 			}
 
 			if ((key == 'D') || (key == 'd'))
 			{
+				tileMap[(int)listenerPos.z - 1][(int)listenerPos.x - 1] = VACIO;
+
 				listenerPos.x += 1;
 				soundManager->SetListenerPos(&listenerPos);
+
+				tileMap[(int)listenerPos.z - 1][(int)listenerPos.x - 1] = LISTENER;
+
 			}
 
 			if ((key == 'J') || (key == 'j'))
 			{
+				tileMap[(int)sourcePos.z - 1][(int)sourcePos.x - 1] = VACIO;
 
 				sourcePos.x -= 1;
 				footstepSound->SetPos(&sourcePos);
+
+				tileMap[(int)sourcePos.z - 1][(int)sourcePos.x - 1] = SOURCE;
 
 			}
 
 			if ((key == 'K') || (key == 'k'))
 			{
+				tileMap[(int)sourcePos.z - 1][(int)sourcePos.x - 1] = VACIO;
+
 				sourcePos.z -= 1;
 				footstepSound->SetPos(&sourcePos);
+
+				tileMap[(int)sourcePos.z - 1][(int)sourcePos.x - 1] = SOURCE;
+
 			}
 
 			if ((key == 'L') || (key == 'l'))
 			{
+				tileMap[(int)sourcePos.z - 1][(int)sourcePos.x - 1] = VACIO;
+
 				sourcePos.x += 1;
 				footstepSound->SetPos(&sourcePos);
+
+				tileMap[(int)sourcePos.z - 1][(int)sourcePos.x - 1] = SOURCE;
+
 			}
 			if ((key == 'I') || (key == 'i'))
 			{
+				tileMap[(int)sourcePos.z - 1][(int)sourcePos.x - 1] = VACIO;
+
 				sourcePos.z += 1;
 				footstepSound->SetPos(&sourcePos);
+
+				tileMap[(int)sourcePos.z - 1][(int)sourcePos.x - 1] = SOURCE;
+
 			}
+			if ((key == 'V') || (key == 'v'))
+			{
+
+
+				footstepSound->
+
+
+			}
+			if ((key == 'B') || (key == 'b'))
+			{
+
+
+			}
+			renderTileMap(tileMap);
+
 			//if ((key == 'Y') || (key == 'y'))
 			//{
 			//	footstepSound->SetConeOrientarion();
 			//}
 		}
-
+	
 		SoundManager::GetInstance()->Update();
 	}
 
@@ -215,6 +327,7 @@ void Ejercicio2()
 	*/
 	delete footstepSound;
 }
+
 
 //TODO: ChannelGroup
 //Se pueden crear grupos de canales y crear jerarquias
@@ -260,9 +373,9 @@ int main() {
 	//colocamos listener
 	soundManager->SetListener(0, &listenerPos, &listenerVel, &up, &at);
 
-	Ejercicio1();
+	//Ejercicio1();
 
-	//Ejercicio2();
+	Ejercicio2();
 
 	SoundManager::ResetInstance();
 

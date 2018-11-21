@@ -29,6 +29,11 @@ public:
 	//OutsideConeAngle. Ángulo del cono exterior. Donde el sonido se atenúa. Se calcua por interpolación. Por defecto 360
 	//OutsiudeVolume. Volumen fuera del cono exteior. Por defecto 1.0
 	void SetConeSettings(float insideConeAngle, float outsideconeangle, float outsidevolume);	//Angulos en grados
+	void SetInsideCone(float insideConeAngle);
+	void SetOutsideCone(float insideConeAngle);
+
+	void SetMinDistance(float minDistance);
+	void SetMaxDistance(float maxDistance);
 
 	void FadeIn(float time);
 	void FadeOut(float time);
