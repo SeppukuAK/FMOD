@@ -8,7 +8,7 @@ Gestiona y reproduce sonidos.
 class MySound
 {
 public:
-	MySound(const char* path);
+	MySound(const char* path, FMOD_MODE mode);
 	~MySound();
 
 	void TogglePaused();

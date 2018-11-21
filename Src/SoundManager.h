@@ -26,7 +26,8 @@ public:
 
 	void Update();
 
-	void SetListener(int id, FMOD_VECTOR * pos, FMOD_VECTOR * vel, FMOD_VECTOR * up, FMOD_VECTOR * at);	//Dimensiones del escenario	
+	//Listener methods
+	void SetListener(int id, FMOD_VECTOR * pos, FMOD_VECTOR * vel, FMOD_VECTOR * up, FMOD_VECTOR * at);
 	void SetListenerPos(FMOD_VECTOR *pos);
 	void SetNumListeners(int num);			//Establece el número de listeners
 
@@ -34,7 +35,6 @@ public:
 	void SetRolloff(float newValue);	//Atenuación con la distancia
 	void SetDoppler(float newValue);	//Variación de frecuencia por la velocidad
 	void SetDistanceFactor(float newValue);	//Dimensiones del escenario
-
 
 	static void ERRCHECK(FMOD_RESULT result);	//Facilita la gestión de errores
 

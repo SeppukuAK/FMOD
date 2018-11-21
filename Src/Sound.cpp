@@ -3,20 +3,21 @@
 
 
 
-MySound::MySound(const char* path)
+MySound::MySound(const char* path, FMOD_MODE mode)
 {
 	sound = nullptr;
 	channel = nullptr;
 
+	//TODO: Es cargado como sample, puede ser cargado como streaming,etc
 	FMOD_RESULT result = SoundManager::GetInstance()->GetSystem()->createSound(
 		path,
-		FMOD_3D | FMOD_LOOP_NORMAL, // valores (por defecto: sin loop, 2D) Existen más alternativas
+		mode, // valores (por defecto: sin loop, 2D) Existen más alternativas
 		0, // informacion adicional (nada en este caso)
 		&sound);
 	SoundManager::ERRCHECK(result);
 
 	//TODO: ARRANCAR CANAL EN PAUSE
-
+	//TODO: Sonido2d y 3d
 
 	////Posiciona en el tiempo 
 	//channel->setPosition(0, FMOD_TIMEUNIT_MS); //Medio segundo después

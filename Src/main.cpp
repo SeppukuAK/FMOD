@@ -19,7 +19,7 @@ void Ejercicio1()
 	MySound * footstepSound = nullptr;
 
 	std::string path = "../../Media/muestras/piano.ogg";
-	footstepSound = new MySound(path.c_str());
+	footstepSound = new MySound(path.c_str(), FMOD_2D | FMOD_LOOP_NORMAL);
 	//Bucle principal
 
 	printf("[P] Pausar/Despausar\n[V/v] Subir/bajar volumen\n[Q] Salir\n");
@@ -44,6 +44,7 @@ void Ejercicio1()
 
 			else if ((key == 'Q') || (key == 'q')) break;
 
+			//Do
 			else if ((key == 'Z') || (key == 'z'))
 			{
 				footstepSound->Play();
@@ -126,7 +127,7 @@ void Ejercicio2()
 
 	MySound * footstepSound = nullptr;
 	std::string path = "../../Media/muestras/footstep.wav";
-	footstepSound = new MySound(path.c_str());
+	footstepSound = new MySound(path.c_str(), FMOD_3D | FMOD_LOOP_NORMAL);
 	footstepSound->Play();
 
 	footstepSound->SetLoop(true);
@@ -142,7 +143,8 @@ void Ejercicio2()
 	footstepSound->SetConeSettings(30.0f, 60.0f, 0.5f); // angulos en grados
 
 	//Para calcular la velocidad de una fuente de sonido utilizamos la posicion de la entidad
-	//vel.x = (pos.x - lastPos.x) * elapsed;
+	//vel.x = (pos.x - lastPos.x) * elapsed;
+
 
 	while (true)
 	{
@@ -214,6 +216,7 @@ void Ejercicio2()
 	delete footstepSound;
 }
 
+//TODO: ChannelGroup
 //Se pueden crear grupos de canales y crear jerarquias
 void ChannelGroup()
 {
@@ -254,12 +257,12 @@ int main() {
 		up = { 0,1,0 }, // vector up: hacia la ``coronilla''
 		at = { 1,0,0 }; // vector at: hacia donde mira
 
-		// colocamos listener
+	//colocamos listener
 	soundManager->SetListener(0, &listenerPos, &listenerVel, &up, &at);
 
-	//Ejercicio1();
+	Ejercicio1();
 
-	Ejercicio2();
+	//Ejercicio2();
 
 	SoundManager::ResetInstance();
 
